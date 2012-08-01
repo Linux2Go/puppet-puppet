@@ -8,10 +8,10 @@ templatedir=$confdir/templates
 prerun_command=/etc/puppet/etckeeper-commit-pre
 postrun_command=/etc/puppet/etckeeper-commit-post
 pluginsync=true
-runinterval=<%= runinterval %>
-<% if extra_modules != "" %>modulepath=<%= extra_modules %>:$confdir/modules:/usr/share/puppet/modules<% end %>
-<% if puppetmaster_address != "" %>server=<%= puppetmaster_address %><% end %>
-<% if certname != "" %>certname=<%= certname %><% end %>
+runinterval=<% if @runinterval %><%= runinterval %><% end %>
+<% if @extra_modules %>modulepath=<%= extra_modules %>:$confdir/modules:/usr/share/puppet/modules<% end %>
+<% if @puppetmaster_address %>server=<%= puppetmaster_address %><% end %>
+<% if @certname %>certname=<%= certname %><% end %>
 
 [master]
 # These are needed when the puppetmaster is run by passenger
@@ -22,5 +22,5 @@ storeconfigs = true
 thin_storeconfigs = true
 dbadapter = mysql
 dbuser = puppet
-dbpassword = <%= mysql_password %>
+dbpassword = <% if @mysql_password %><%= mysql_password %><% end %>
 dbserver = localhost

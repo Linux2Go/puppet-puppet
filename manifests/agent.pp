@@ -16,11 +16,11 @@ class puppet::agent($puppetmaster_address = undef,
 
 	file { "/etc/default/puppet":
 		content => template('puppet/defaults.erb'),
-		notify => Exec["restart-puppet"],
+		notify => Service['puppet'],
 	}
 
 	File <| title == "/etc/puppet/puppet.conf" |> {
-		notify +> Exec["restart-puppet"]
+		notify => Service['puppet'],
 	}
 
 	file { "/etc/init.d/puppet":
@@ -28,13 +28,13 @@ class puppet::agent($puppetmaster_address = undef,
 		owner => root,
 		group => root,
 		content => template('puppet/init.erb'),
-		notify => Exec["restart-puppet"]
+		notify => Service['puppet'],
 	}
 
-	exec { "restart-puppet":
-		command => "/usr/sbin/service puppet restart",
+    service { "puppet":
 		require => Package[puppet],
-		refreshonly => true
-	}
+        ensure => running,
+        enable => true,
+    }
 }
 

@@ -23,14 +23,6 @@ class puppet::agent($puppetmaster_address = undef,
 		notify => Service['puppet'],
 	}
 
-	file { "/etc/init.d/puppet":
-		mode => 0755,
-		owner => root,
-		group => root,
-		content => template('puppet/init.erb'),
-		notify => Service['puppet'],
-	}
-
     service { "puppet":
 		require => Package[puppet],
         ensure => running,
